@@ -7,3 +7,18 @@ Feature: Test de API súper simple
     Given url 'https://httpbin.org/get'
     When method get
     Then status 200
+
+
+Background:
+    * configure ssl = true
+
+  Scenario: Verificar que un endpoint público responde 200
+    Given url 'https://httpbin.org/get'
+    When method get
+    Then status 200
+
+
+	Scenario: Testing valid GET endpoint
+	Given url 'http://localhost:8080/cbolanos/api/characters'
+	When method GET
+	Then status 200
