@@ -1,24 +1,23 @@
-Feature: Test de API súper simple
+Feature: HU-TEM-0001 - Gestion de personajes Marvel
 
-  Background:
-    * configure ssl = true
+@ObtenerTodosLosPersonajes
+Scenario: Obtener todos los personajes
+	Given url 'http://bp-se-test-cabcd9b246a5.herokuapp.com/cbolanos/api/characters'
+	When method get
+	then status 200
+	
+@ObtenerPersonajePorId
+Scenario: Obtener personaje por ID
+	Given url http://bp-se-test-cabcd9b246a5.herokuapp.com/cbolanos/api/characters/1'
+	When method get
+	then status 200
+	and match response.id == 1
 
-  Scenario: Verificar que un endpoint público responde 200
-    Given url 'https://httpbin.org/get'
-    When method get
-    Then status 200
-
-
-Background:
-    * configure ssl = true
-
-  Scenario: Verificar que un endpoint público responde 200
-    Given url 'https://httpbin.org/get'
-    When method get
-    Then status 200
-
-
-	Scenario: Testing valid GET endpoint
-	Given url 'http://localhost:8080/cbolanos/api/characters'
-	When method GET
-	Then status 200
+@CrearPersonajeDuplicado
+Scenario: Crear personaje con nombre duplicado
+	Given url ' http://bp-se-test-cabcd9b246a5.herokuapp.com/cbolanos/api/characters'
+	and request {name: 'Iron Man', alterego: 'Otro', description: 'Otro', powers: {'Armor'}}
+	and header Content-Type = 'application/json'
+	when method post
+	then status 400
+	and match response == {error: 'Character name already exists'}
